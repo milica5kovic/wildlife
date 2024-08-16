@@ -1,21 +1,22 @@
 using Application.Activities;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     public class ActivitiesController : BaseApiController
     {
-        private readonly IMediator _mediator;
+   
 
-        public ActivitiesController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        // public ActivitiesController(IMediator mediator)
+        // {
+        //     _mediator = mediator;
+        // }
         [HttpGet] //api/activities
         public async Task<ActionResult<List<Domain.Activity>>> GetActivities(){
-            return await _mediator.Send(new List.Query());
+            return await Mediator.Send(new List.Query());
         }
         [HttpGet("{id}")]
         public ActionResult<Domain.Activity> GetActivity(Guid id)
@@ -23,9 +24,9 @@ namespace API.Controllers
             return Ok();
         }
 
-        private ActionResult<Activity> Ok()
-        {
-            throw new NotImplementedException();
-        }
+        // private ActionResult<Activity> Ok()
+        // {
+        //     throw new NotImplementedException();
+        // }
     }
 }
