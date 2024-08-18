@@ -1,7 +1,5 @@
 using Application.Activities;
 using Domain;
-using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -37,6 +35,14 @@ namespace API.Controllers
             
             return Ok();
         }
-
+        [HttpDelete("{id}")]
+        
+        public async Task<IActionResult> Delete(Guid id){
+            
+            await Mediator.Send(new Delete.Command{Id = id});
+            return Ok();
+            
+        }
+        
     }
 }
