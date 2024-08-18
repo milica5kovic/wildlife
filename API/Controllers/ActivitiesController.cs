@@ -10,23 +10,33 @@ namespace API.Controllers
     {
    
 
-        // public ActivitiesController(IMediator mediator)
-        // {
-        //     _mediator = mediator;
-        // }
+       
         [HttpGet] //api/activities
         public async Task<ActionResult<List<Domain.Activity>>> GetActivities(){
             return await Mediator.Send(new List.Query());
         }
+        
+        
         [HttpGet("{id}")]
-        public ActionResult<Domain.Activity> GetActivity(Guid id)
+        public  async Task<ActionResult<Domain.Activity>> GetActivity(Guid id)
         {
+            return await Mediator.Send(new Details.Query{Id = id});
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateActivity ([FromBody]Activity activity){
+            await Mediator.Send(new Create.Command {Activity = activity});
+            return Ok();
+            
+        
+        }
+        [HttpPut("{id}")]
+        
+        public async Task<IActionResult> Edit(Guid id, Activity activity){
+            activity.Id = id;
+            await Mediator.Send(new Edit.Command{Activity = activity});
+            
             return Ok();
         }
 
-        // private ActionResult<Activity> Ok()
-        // {
-        //     throw new NotImplementedException();
-        // }
     }
 }
