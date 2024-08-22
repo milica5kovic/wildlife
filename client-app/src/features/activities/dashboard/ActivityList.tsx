@@ -3,9 +3,10 @@ import { Button, Item, ItemContent, ItemDescription, Label, Segment } from "sema
 
 interface Props {
     activities: Activity[];
+    selectActivity: (id: string) => void;
 }
 
-export default function ActivityList({ activities }: Props) {
+export default function ActivityList({ activities, selectActivity }: Props) {
     return (
         <Segment>
             <Item.Group divided>
@@ -23,7 +24,7 @@ export default function ActivityList({ activities }: Props) {
                                 </div>
                             </ItemDescription>
                             <Item.Extra>
-                                <Button floated='right' content='View' color='purple' />
+                                <Button onClick={() => selectActivity(activity.id)} floated='right' content='View' color='purple' />
                                 <Label basic content={activity.category} />
                                     
                               
