@@ -1,21 +1,40 @@
-import { makeObservable, observable, action } from "mobx";
-import { useContext } from "react";
-import { StoreContext } from "./store";
+import { makeAutoObservable } from "mobx";
+import { Activity } from "../models/activity";
+import agent from "../api/agent";
 
-export default class ActivityStore{
-    title = 'Hello mobx';
-    
-    constructor(){
-        makeObservable(this, {
-            title: observable,
-            setTitle: action.bound
+export default class ActivityStore {
+    static loadActivities() {
+      throw new Error('Method not implemented.');
+    }
+    activities: Activity[] = [];
+    selectedActivity: Activity | null = null;
+    editMode = false;
+    loading = false;
+    loadingInitial = false;
+  static loadingInitial: any;
+  static activities: Activity[];
+
+    constructor() {
+        makeAutoObservable(this, {
+
         })
     }
-    setTitle(){
-        this.title = this.title + '!';
+    loadActivities = async () => {
+        this.loadingInitial = true;
+        try {
+            const activities = await agent.Activities.list();
+            activities.forEach(activity => {
+                activity.date = activity.date.split('T')[0];
+                this.activities.push(activity);
+
+            })
+            this.loadingInitial = false;
+
+        } catch (error) {
+            console.log(error);
+            this.loadingInitial = false;
+        }
     }
+
 }
 
-export function useStore(){
-    return useContext(StoreContext);
-}
